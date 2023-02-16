@@ -307,7 +307,7 @@ int main(int argc, char* argv[])
 
 
                 if (!ReadBinaryFile(srcFilePath, src_data, &src_size))
-                    throw std::exception("File Not Found.");
+                    throw std::runtime_error("File Not Found.");
 
                 // DeCompress the data
                 output_size = BrotliG::DecompressedSize(src_data);
@@ -322,7 +322,7 @@ int main(int argc, char* argv[])
                     processMessage = "Brotli-G GPU decompressor";
 
                     if (DecodeGPU(pParams.use_warp, src_size, src_data, &output_size, output_data, deltaTime) != BROTLIG_OK)
-                        throw std::exception("Brotli-G GPU Decoder Failed or Aborted.");
+                        throw std::runtime_error("Brotli-G GPU Decoder Failed or Aborted.");
                 }
                 else
 #endif
@@ -335,7 +335,7 @@ int main(int argc, char* argv[])
 
                     auto start = std::chrono::high_resolution_clock::now();
                     if (BrotliG::DecodeCPU(src_size, src_data, &output_size, output_data, pParams.verbose ? processFeedback : nullptr) != BROTLIG_OK)
-                        throw std::exception("Brotli-G CPU Decoder Failed or Aborted.");
+                        throw std::runtime_error("Brotli-G CPU Decoder Failed or Aborted.");
                     auto end = std::chrono::high_resolution_clock::now();
 
                     deltaTime = static_cast<double>(std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count());
@@ -344,7 +344,7 @@ int main(int argc, char* argv[])
                 
                 printf("Saving decompressed file %s\n", dstFilePath.c_str());
                 if (!WriteBinaryFile(dstFilePath, output_data, output_size))
-                    throw std::exception("File Not Saved.");
+                    throw std::runtime_error("File Not Saved.");
             }
             else {
 
@@ -357,21 +357,21 @@ int main(int argc, char* argv[])
                 dstFilePath.append(BROTLIG_FILE_EXTENSION);
 
                 if (!ReadBinaryFile(srcFilePath, src_data, &src_size))
-                    throw std::exception("File Not Found.");
+                    throw std::runtime_error("File Not Found.");
 
                 output_size = BrotliG::MaxCompressedSize(src_size);
                 output_data = new uint8_t[output_size];
 
                 auto start = std::chrono::high_resolution_clock::now();
                 if (BrotliG::Encode(src_size, src_data, &output_size, output_data, pParams.verbose ? processFeedback:nullptr) != BROTLIG_OK)
-                    throw std::exception("Brotli-G Encoder Failed or Aborted.");
+                    throw std::runtime_error("Brotli-G Encoder Failed or Aborted.");
                 auto end = std::chrono::high_resolution_clock::now();
 
                 deltaTime = static_cast<double>(std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count());
 
                 printf("\nSaving compressed file %s\n", dstFilePath.c_str());
                 if (!WriteBinaryFile(dstFilePath, output_data, output_size))
-                    throw std::exception("File Not Saved.");
+                    throw std::runtime_error("File Not Saved.");
                 isCompressed = true;
 
             }
@@ -395,7 +395,7 @@ int main(int argc, char* argv[])
                 }
 
                 if (!ReadBinaryFile(srcFilePath, src_data, &src_size))
-                    throw std::exception("File Not Found.");
+                    throw std::runtime_error("File Not Found.");
 
                 // DeCompress the data
                 size_t output_sizet = (size_t)pParams.brotli_decode_output_size;
@@ -410,15 +410,15 @@ int main(int argc, char* argv[])
 
 
                 if (result == BROTLI_DECODER_RESULT_NEEDS_MORE_OUTPUT)
-                    throw std::exception("Brotli Decoder Failed. Set larger output buffer size.");
+                    throw std::runtime_error("Brotli Decoder Failed. Set larger output buffer size.");
                 else if (result == BROTLI_DECODER_RESULT_NEEDS_MORE_INPUT
                     || result == BROTLI_DECODER_RESULT_ERROR)
-                    throw std::exception("Brotil Decoder Failed. Input file may be corrupted.");
+                    throw std::runtime_error("Brotil Decoder Failed. Input file may be corrupted.");
 
                 // Save the uncompressed file
                 printf("\nSaving decompressed file %s\n", dstFilePath.c_str());
                 if (!WriteBinaryFile(dstFilePath, output_data, output_size))
-                    throw std::exception("File Not Saved.");
+                    throw std::runtime_error("File Not Saved.");
 
             }
             else {
@@ -432,7 +432,7 @@ int main(int argc, char* argv[])
                 dstFilePath.append(BROTLI_FILE_EXTENSION);
 
                 if (!ReadBinaryFile(srcFilePath, src_data, &src_size))
-                    throw std::exception("File Not Found.");
+                    throw std::runtime_error("File Not Found.");
 
                 size_t output_sizet = BrotliEncoderMaxCompressedSize(src_size);
                 uint8_t* output_data = new uint8_t[output_sizet];
@@ -446,7 +446,7 @@ int main(int argc, char* argv[])
                                             &output_sizet,
                                             output_data)) 
                 {
-                    throw std::exception("Brotli Encoder Failed or Aborted.");
+                    throw std::runtime_error("Brotli Encoder Failed or Aborted.");
                 }
                 auto end = std::chrono::high_resolution_clock::now();
 
@@ -455,7 +455,7 @@ int main(int argc, char* argv[])
 
                 printf("\nSaving compressed file %s\n", dstFilePath.c_str());
                 if (!WriteBinaryFile(dstFilePath, output_data, output_size))
-                    throw std::exception("File Not Saved.");
+                    throw std::runtime_error("File Not Saved.");
                 isCompressed = true;
             }
         }
@@ -478,7 +478,7 @@ int main(int argc, char* argv[])
         if (output_data != nullptr)  delete[](output_data);
         if (src_data != nullptr) delete[](src_data);
     }
-    catch (const std::exception& ex)
+    catch (const std::runtime_error& ex)
     {
         fprintf(stderr, "ERROR: %s\n", ex.what());
         return -1;

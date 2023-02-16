@@ -291,7 +291,7 @@ void BrotligHuffmanTree::LoadTree(BrotligDeswizzler* deswizzler, size_t alphabet
     }
      
     default:
-        throw std::exception("Error loading huffman table. Incorrect tree type.");
+        throw std::runtime_error("Error loading huffman table. Incorrect tree type.");
     }
 }
 
