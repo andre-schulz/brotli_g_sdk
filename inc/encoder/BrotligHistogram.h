@@ -25,6 +25,8 @@
 
 #pragma once
 
+#include <map>
+
 extern "C" {
 #include "brotli/c/common/constants.h"
 #include "brotli/c/enc/bit_cost.h"

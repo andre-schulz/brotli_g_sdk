@@ -18,6 +18,7 @@
 // THE SOFTWARE.
 
 
+#include <atomic>
 #include <iostream>
 #include <thread>
 
