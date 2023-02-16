@@ -38,8 +38,8 @@ unsigned int    _stdcall BrotliG::ThreadProc(void* threadParam)
 {
     ThreadParam* tp = (ThreadParam*)threadParam;
 
-    while (tp->exit == FALSE) {
-        if (tp->run == TRUE) {
+    while (tp->exit == false) {
+        if (tp->run == true) {
             tp->worker->Setup(tp->block_in, tp->block_in_size, tp->params, tp->flags, tp->extra);
             tp->worker->Run();
             *tp->block_out_size = tp->worker->GetOutputSize();
@@ -90,8 +90,8 @@ BROTLIG_ERROR   BrotligMultithreader::Initialize() {
 
         // Inform the thread that at the moment it doesn't have any work to do
         // but that it should wait for some and not exit
-        m_ParameterStorage[i].run = FALSE;
-        m_ParameterStorage[i].exit = FALSE;
+        m_ParameterStorage[i].run = false;
+        m_ParameterStorage[i].exit = false;
 
         m_ThreadHandle[i] = std::thread(ThreadProc, (void*)&m_ParameterStorage[i]);
         m_LiveThreads++;
@@ -114,15 +114,15 @@ BROTLIG_ERROR   BrotligMultithreader::ProcessBlock(
 
     void* params = GenerateParamSet(userparams, num_userparams);
 
-    bool found = FALSE;
+    bool found = false;
     threadIndex = m_LastThread;
-    while (found == FALSE) {
+    while (found == false) {
         
         if (m_ParameterStorage == nullptr)
             return BROTLIG_ERROR_GENERIC;
 
-        if (m_ParameterStorage[threadIndex].run == FALSE) {
-            found = TRUE;
+        if (m_ParameterStorage[threadIndex].run == false) {
+            found = true;
             break;
         }
 
@@ -148,7 +148,7 @@ BROTLIG_ERROR   BrotligMultithreader::ProcessBlock(
     m_ParameterStorage[threadIndex].extra = extra;
 
     // Tell the thread to start working
-    m_ParameterStorage[threadIndex].run = TRUE;
+    m_ParameterStorage[threadIndex].run = true;
 
     return BROTLIG_OK;
 }
@@ -159,11 +159,11 @@ BROTLIG_ERROR   BrotligMultithreader::FinishBlocks() {
 
         // If a thread is in the running state then we need to wait for it to finish
         // its work from the producer
-        while (m_ParameterStorage[i].run == TRUE) {
+        while (m_ParameterStorage[i].run == true) {
             std::this_thread::sleep_for(std::chrono::milliseconds(0));
         }
 
-        m_ParameterStorage[i].exit = TRUE;
+        m_ParameterStorage[i].exit = true;
 
         if (m_ThreadHandle[i].joinable())
             m_ThreadHandle[i].join();
