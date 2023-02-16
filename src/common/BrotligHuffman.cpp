@@ -355,7 +355,7 @@ void BrotligHuffmanTree::Display(std::string name, std::ostream& stream)
                 return a->depth < b->depth;
         });
         
-        for each (BrotligHuffmanNodePtr n in temp)
+        for (BrotligHuffmanNodePtr n : temp)
         {
             if(n->depth != 0)
                 stream << n->value << "\n";
@@ -456,7 +456,7 @@ void BrotligHuffmanTree::ComputeCodes(bool forDecoder)
 
     // Count the number of codes for each code length
     std::vector<uint16_t> bl_count(BROTLIG_MAX_HUFFMAN_BITS, 0);
-    for each (BrotligHuffmanNodePtr treenode in m_treenodes)
+    for (BrotligHuffmanNodePtr treenode : m_treenodes)
     {
         bl_count[treenode->depth]++;
     }
