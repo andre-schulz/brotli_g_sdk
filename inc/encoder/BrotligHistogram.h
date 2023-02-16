@@ -424,9 +424,9 @@ namespace BrotliG
             return;
         }
         if (idx2 < idx1) {
-            uint32_t t = idx2;
+            uint32_t tmp = idx2;
             idx2 = idx1;
-            idx1 = t;
+            idx1 = tmp;
         }
         p.idx1 = idx1;
         p.idx2 = idx2;
@@ -593,9 +593,9 @@ namespace BrotliG
         }
 
         if (idx2 < idx1) {
-            uint32_t t = static_cast<uint32_t>(idx2);
+            uint32_t tmp = static_cast<uint32_t>(idx2);
             idx2 = idx1;
-            idx1 = t;
+            idx1 = tmp;
         }
 
         // Prevent addition of duplicates;
