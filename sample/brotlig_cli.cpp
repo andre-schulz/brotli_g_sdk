@@ -287,7 +287,7 @@ int main(int argc, char* argv[])
         bool     isCompressed = false;
         double   compression_ratio = 0.0;
         double   bandwidth = 0.0;
-        char* processMessage = "";
+        const char* processMessage = "";
 
 #ifdef USE_BROTLI_CODEC
         if (pParams.use_brotli == false)
