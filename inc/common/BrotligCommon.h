@@ -39,9 +39,11 @@
 #include <variant>
 #include <queue>
 #include <set>
-#include <Windows.h>
 
+#if defined(WIN32) || defined(_WIN64)
+#include <Windows.h>
 #include <d3d12.h>
+#endif
 
 #include "BrotligFlags.h"
 
