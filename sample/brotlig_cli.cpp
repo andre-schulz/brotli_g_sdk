@@ -17,8 +17,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#define NOMINMAX
-#include <Windows.h>
 #include <cstdio>
 #include <cstdint>
 #include <string>
@@ -65,12 +63,12 @@ typedef struct BROTLIG_OPTIONS_T {
     BROTLIG_OPTIONS_T()
     {
 #ifdef USE_GPU_DECOMPRESSION
-        use_gpu = FALSE;
-        use_warp = FALSE;
+        use_gpu = false;
+        use_warp = false;
 #endif
-        verbose = FALSE;
+        verbose = false;
 #ifdef USE_BROTLI_CODEC
-        use_brotli = FALSE;
+        use_brotli = false;
         brotli_quality = DEFAULT_BROTLI_QUALITY;
         brotli_lgwin = DEFAULT_BROTLI_LGWIN;
         brotli_decode_output_size = DEFAULT_BROTLI_DECODE_OUTPUT_SIZE;
