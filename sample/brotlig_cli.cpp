@@ -236,7 +236,7 @@ void printStatus(const char* status, ...)
     char text[MAX_STATUS_STRING_BUFFER];
     va_list list;
     va_start(list, status);
-    vsprintf_s(text, MAX_STATUS_STRING_BUFFER, status, list);
+    vsnprintf(text, MAX_STATUS_STRING_BUFFER, status, list);
     va_end(list);
     printf(text);
 }
