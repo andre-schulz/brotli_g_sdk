@@ -238,7 +238,7 @@ void printStatus(const char* status, ...)
     va_start(list, status);
     vsnprintf(text, MAX_STATUS_STRING_BUFFER, status, list);
     va_end(list);
-    printf(text);
+    puts(text);
 }
 
 // Called internally by the Encoder a % value ranging from 0.0% to 100% is passed in 
