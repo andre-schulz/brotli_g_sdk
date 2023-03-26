@@ -24,6 +24,10 @@
 #include "BrotligCommon.h"
 #include "DataStream.h"
 
+#ifndef WIN32
+#define _stdcall
+#endif
+
 namespace BrotliG
 {
     class BrotligWorker
