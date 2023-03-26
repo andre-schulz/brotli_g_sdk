@@ -39,22 +39,6 @@ extern "C" {
 
 namespace BrotliG
 {
-    static const size_t kMaxLiteralHistograms = 1;
-    static const size_t kMaxCommandHistograms = 1;
-    static const size_t kMaxNumberOfHistograms = 1;
-    static const double kLiteralBlockSwitchCost = 28.1;
-    static const double kCommandBlockSwitchCost = 13.5;
-    static const double kDistanceBlockSwitchCost = 14.6;
-    static const size_t kLiteralStrideLength = 70;
-    static const size_t kCommandStrideLength = 40;
-    static const size_t kDistanceStrideLength = 40;
-    static const size_t kSymbolsPerLiteralHistogram = 544;
-    static const size_t kSymbolsPerCommandHistogram = 530;
-    static const size_t kSymbolsPerDistanceHistogram = 544;
-    static const size_t kMinLengthForBlockSplitting = 128;
-    static const size_t kIterMulForRefining = 2;
-    static const size_t kMinItersForRefining = 100;
-
 #define HISTOGRAMS_PER_BATCH 64
 #define CLUSTERS_PER_BATCH 16
 #define SYMBOL_BITS 9
