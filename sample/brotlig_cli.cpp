@@ -221,12 +221,14 @@ void ParseCommandLine(int argCount, char* args[], std::string& srcFilePath, std:
         dstFilePath = "";
 }
 
+#ifdef WIN32
 bool keypressed()
 {
     if (GetAsyncKeyState(VK_ESCAPE) & 0x01)
         return true;
     return false;
 }
+#endif
 
 // user can overide this to direct status messages 
 // to a specific device output
@@ -247,8 +249,10 @@ void printStatus(const char* status, ...)
 // doing so will slow down the encoding process
 bool processFeedback(float processCompleted)
 {
+#ifdef WIN32
     if (keypressed())
         return true;
+#endif
     printStatus("\rProcessing %3.0f %%", processCompleted);
     return false;
 }
