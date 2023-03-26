@@ -29,12 +29,28 @@ endif()
 
 if (OPTION_SAMPLE_ENABLE_GPU)
 add_compile_definitions(USE_GPU_DECOMPRESSION)
+target_sources(brotlig_cli
+    PRIVATE
+        BrotligGPUDecoder.h
+        BrotligGPUDecoder.cpp
+)
+target_link_libraries(brotlig_cli
+    PRIVATE
+    dxgi.lib
+    d3d12.lib
+    d3dcompiler.lib
+    dxguid.lib
+    dxcompiler.lib
+)
+add_custom_command(TARGET brotlig_cli POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different "${PROJECT_SOURCE_DIR}/src/decoder/BrotliGCompute.hlsl" $<TARGET_FILE_DIR:brotlig_cli>
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different "${PROJECT_SOURCE_DIR}/sample/external/dxc_2021_12_08/bin/x64/dxil.dll" $<TARGET_FILE_DIR:brotlig_cli>
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different "${PROJECT_SOURCE_DIR}/sample/external/dxc_2021_12_08/bin/x64/dxcompiler.dll" $<TARGET_FILE_DIR:brotlig_cli>
+)
 endif()
 
 target_sources(brotlig_cli
     PRIVATE
-			BrotligGPUDecoder.h
-			BrotligGPUDecoder.cpp
             brotlig_cli.cpp
 )
 
@@ -57,11 +73,6 @@ target_link_directories( brotlig_cli PRIVATE
 
 target_link_libraries(brotlig_cli
     PRIVATE
-	dxgi.lib
-	d3d12.lib
-	d3dcompiler.lib
-	dxguid.lib
-	dxcompiler.lib
     ${DEPS}
 )
 
@@ -70,10 +81,4 @@ set_target_properties(brotlig_cli
      OUTPUT_NAME "brotlig"
      VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/$(Configuration)"
     )
-	
-add_custom_command(TARGET brotlig_cli POST_BUILD
-COMMAND ${CMAKE_COMMAND} -E copy_if_different "${PROJECT_SOURCE_DIR}/src/decoder/BrotliGCompute.hlsl" $<TARGET_FILE_DIR:brotlig_cli>
-COMMAND ${CMAKE_COMMAND} -E copy_if_different "${PROJECT_SOURCE_DIR}/sample/external/dxc_2021_12_08/bin/x64/dxil.dll" $<TARGET_FILE_DIR:brotlig_cli>
-COMMAND ${CMAKE_COMMAND} -E copy_if_different "${PROJECT_SOURCE_DIR}/sample/external/dxc_2021_12_08/bin/x64/dxcompiler.dll" $<TARGET_FILE_DIR:brotlig_cli>
-)
 
